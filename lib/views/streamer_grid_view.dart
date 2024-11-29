@@ -1,21 +1,40 @@
-import 'package:fan_stream/views/streamer_grid_view.dart';
+import 'package:fan_stream/entities/streamer/streamer.dart';
 import 'package:flutter/material.dart';
+// Statelessでいい気がするけど一様Statefulで作る
 
-// サンプルページ（とりあえず表示だけ作りたい場合に仮置きする用のページ）
-class SamplePage extends StatelessWidget {
-  final String name;
+class StreamerGridView extends StatefulWidget {
+  const StreamerGridView({Key? key}) : super(key: key);
 
-  const SamplePage(this.name, {Key? key}) : super(key: key);
+  @override
+  State<StreamerGridView> createState() => _StreamerGridViewState();
+}
+
+class _StreamerGridViewState extends State<StreamerGridView> {
+  final List<Streamer> _streamers = [
+    Streamer(
+        id: 0,
+        name: "藍沢エマ",
+        thumbnailUrl:
+            "https://yt3.ggpht.com/oIps6UVvqtpJykcdjYYyRvhdcyVoR1wAdH8CnTp4msMaKYdn8XMLj4FHsLoqfWaJzbLJKSPjCg=s88-c-k-c0x00ffffff-no-rj")
+  ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: Text(name, style: const TextStyle(fontSize: 32)),
+      body: GridView.builder(
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 3,
+        ),
+        itemCount: _streamers.length,
+        itemBuilder: (BuildContext context, int index) {
+          return Image.network(_streamers[index].thumbnailUrl);
+        },
       ),
     );
   }
 }
+
+/*
 
 class BottomTabView extends StatefulWidget {
   const BottomTabView({Key? key}) : super(key: key);
@@ -26,7 +45,7 @@ class BottomTabView extends StatefulWidget {
 
 class _BottomTabViewState extends State<BottomTabView> {
   int _currentIndex = 0;
-  final _pages = [const StreamerGridView(), const SamplePage('media')];
+  final _pages = [const SamplePage('home'), const SamplePage('media')];
 
   @override
   Widget build(BuildContext context) {
@@ -50,3 +69,5 @@ class _BottomTabViewState extends State<BottomTabView> {
             }));
   }
 }
+
+*/
