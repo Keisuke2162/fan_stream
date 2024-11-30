@@ -1,73 +1,99 @@
-import 'package:fan_stream/entities/streamer/streamer.dart';
+import 'package:fan_stream/data/streamers.dart';
 import 'package:flutter/material.dart';
 // Statelessでいい気がするけど一様Statefulで作る
 
 class StreamerGridView extends StatefulWidget {
-  const StreamerGridView({Key? key}) : super(key: key);
+  const StreamerGridView({super.key});
 
   @override
   State<StreamerGridView> createState() => _StreamerGridViewState();
 }
 
 class _StreamerGridViewState extends State<StreamerGridView> {
-  final List<Streamer> _streamers = [
-    Streamer(
-        id: 0,
-        name: "藍沢エマ",
-        thumbnailUrl:
-            "https://yt3.ggpht.com/oIps6UVvqtpJykcdjYYyRvhdcyVoR1wAdH8CnTp4msMaKYdn8XMLj4FHsLoqfWaJzbLJKSPjCg=s88-c-k-c0x00ffffff-no-rj")
-  ];
+  List<int> mockFavoriteStreamerIds = [0, 1];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: GridView.builder(
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 3,
-        ),
-        itemCount: _streamers.length,
-        itemBuilder: (BuildContext context, int index) {
-          return Image.network(_streamers[index].thumbnailUrl);
-        },
-      ),
-    );
+        resizeToAvoidBottomInset: false,
+        body: Container(
+            decoration: const BoxDecoration(
+                image: DecorationImage(
+                    image: AssetImage('assets/images/background.png'),
+                    fit: BoxFit.cover)),
+            child: Padding(
+              padding: const EdgeInsets.only(top: 88),
+              child: GridView.builder(
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  childAspectRatio: 0.9,
+                  crossAxisCount: 3,
+                ),
+                itemCount: mockStreamers.length,
+                itemBuilder: (BuildContext context, int index) {
+                  final streamer = mockStreamers[index];
+                  final isFavorite =
+                      mockFavoriteStreamerIds.contains(streamer.id);
+                  return Column(
+                    children: [
+                      Padding(
+                          padding: const EdgeInsets.all(16),
+                          child: Stack(
+                            alignment: Alignment.topRight,
+                            children: [
+                              GestureDetector(
+                                onTap: () {
+                                  setState(() {
+                                    if (mockFavoriteStreamerIds
+                                        .contains(streamer.id)) {
+                                      mockFavoriteStreamerIds
+                                          .remove(streamer.id);
+                                    } else {
+                                      mockFavoriteStreamerIds.add(streamer.id);
+                                    }
+                                  });
+                                },
+                                child: Container(
+                                  width: 88,
+                                  height: 88,
+                                  decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      border: Border.all(
+                                          color: Color(streamer.colorCode),
+                                          width: 4)),
+                                  child: ClipOval(
+                                    child: Image.network(streamer.thumbnailUrl),
+                                  ),
+                                ),
+                              ),
+                              if (isFavorite)
+                                Positioned(
+                                    top: 0,
+                                    right: 0,
+                                    child: Container(
+                                      width: 32,
+                                      height: 32,
+                                      decoration: BoxDecoration(
+                                          color: Color(streamer.colorCode),
+                                          shape: BoxShape.circle),
+                                      child: const Icon(
+                                        Icons.check,
+                                        color: Colors.white,
+                                        size: 16,
+                                      ),
+                                    ))
+                            ],
+                          )),
+                      Text(
+                        streamer.name,
+                        style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 12,
+                            fontWeight: FontWeight.bold),
+                      )
+                    ],
+                  );
+                },
+              ),
+            )));
   }
 }
-
-/*
-
-class BottomTabView extends StatefulWidget {
-  const BottomTabView({Key? key}) : super(key: key);
-
-  @override
-  State<BottomTabView> createState() => _BottomTabViewState();
-}
-
-class _BottomTabViewState extends State<BottomTabView> {
-  int _currentIndex = 0;
-  final _pages = [const SamplePage('home'), const SamplePage('media')];
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-          title: Text('home'),
-        ),
-        body: _pages.elementAt(_currentIndex),
-        bottomNavigationBar: BottomNavigationBar(
-            items: const [
-              BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-              BottomNavigationBarItem(
-                  icon: Icon(Icons.search), label: 'Streams'),
-            ],
-            currentIndex: _currentIndex,
-            onTap: (int index) {
-              setState(() {
-                _currentIndex = index;
-              });
-            }));
-  }
-}
-
-*/
