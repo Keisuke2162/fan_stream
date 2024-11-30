@@ -20,3 +20,16 @@ enum StreamGroup {
   hololive,
   neoporte,
 }
+
+extension StreamGroupExtension on StreamGroup {
+  String get name {
+    switch (this) {
+      case StreamGroup.vspo:
+        return 'Vspo';
+      case StreamGroup.hololive:
+        return 'hololive';
+      case StreamGroup.neoporte:
+        return 'Neoporte';
+    }
+  }
+}
