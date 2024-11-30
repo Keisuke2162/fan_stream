@@ -11,7 +11,7 @@ class StreamerGridView extends StatefulWidget {
 }
 
 class _StreamerGridViewState extends State<StreamerGridView> {
-  List<int> mockFavoriteStreamerIds = [0, 1];
+  List<int> mockFavoriteStreamerIds = [];
 
   @override
   Widget build(BuildContext context) {
