@@ -1,5 +1,6 @@
 import 'package:fan_stream/custom/custom_appbar.dart';
 import 'package:fan_stream/custom/custom_toolbar_shape.dart';
+import 'package:fan_stream/views/movie_grid_view.dart';
 import 'package:fan_stream/views/streamer_grid_view.dart';
 import 'package:flutter/material.dart';
 
@@ -28,7 +29,7 @@ class BottomTabView extends StatefulWidget {
 
 class _BottomTabViewState extends State<BottomTabView> {
   int _currentIndex = 0;
-  final _pages = [const StreamerGridView(), const SamplePage('media')];
+  final _pages = [const StreamerGridView(), const YoutubeMovieGridView()];
 
   @override
   Widget build(BuildContext context) {
